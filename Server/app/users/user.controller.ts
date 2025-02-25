@@ -17,6 +17,6 @@ export const loginuser = async (req: Request, res: Response) => {
     const user = await login(email, password);
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error: "Failed to login user" });
+    res.status(500).json({ error: "Failed to login user" , message : error });
   }
 }

@@ -15,12 +15,14 @@ export const createUser = async (username: string, email: string, password: stri
 };
 
 export const login = async (email: string, password: string) => {
-  const foundUser = await prisma.user.findFirst({
+  console.log(email, password)
+  const foundUser = await prisma.user.findUnique({
     where: {
-      email: email.toString(),
+      email: email,
     },
   });
   if (!foundUser) {
+    console.log("User not found")
     throw new Error(" User not found");
   }
   const isPasswordCorrect = await bcrypt.compare(
@@ -28,6 +30,7 @@ export const login = async (email: string, password: string) => {
     foundUser.password // Hash Password
   );
   if (!isPasswordCorrect) {
+    console.log("Invalid Password")
     throw new Error("Invalid password");
   }
   const data = { userid: foundUser.id, email: foundUser.email };
